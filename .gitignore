@@ -1,0 +1,26 @@
+# Private secrets, tokens & machine-local config (never commit)
+.bash_private
+.zsh_private
+.gitconfig.local
+.env
+.env.*
+*.pem
+*.key
+
+# Backups created by install.sh
+*.bak.*
+
+# Compiled C / C++ binaries & objects
+*.o
+*.a
+*.so
+a.out
+*.dSYM/
+
+# Editor & OS junk
+.DS_Store
+*.swp
+*.swo
+*~
+.vscode/
+.idea/

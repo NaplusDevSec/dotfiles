@@ -1,0 +1,78 @@
+# shellcheck shell=bash
+# Shared by bash and zsh. Keep this file free of machine-specific or secret
+# settings — those belong in ~/.bash_private or ~/.zsh_private (see private.example).
+
+# ==============================================================================
+# 1. CORE UTILITIES & SAFETY
+# ==============================================================================
+# Enable colored output for standard search commands
+alias grep='grep --color=auto'
+alias fgrep='grep -F --color=auto'  # fgrep/egrep are deprecated in GNU grep >= 3.8
+alias egrep='grep -E --color=auto'
+
+# Prompt for confirmation before overwriting or deleting files (Safety First)
+alias rm='rm -i'
+alias cp='cp -i'
+alias mv='mv -i'
+
+# Clear terminal screen
+alias cls='clear'
+
+# ==============================================================================
+# 2. NAVIGATION & FILE LISTING
+# ==============================================================================
+# Enable colored output for directory listing
+alias ls='ls --color=auto'
+
+# Detailed lists with specific formats
+alias l='ls -CFh'                   # Compact column view
+alias ll='ls -lAFHh'                # Detailed list with hidden files
+alias la='ls -ilAFHh --full-time'   # Include inode numbers and exact timestamps
+alias lt='ls -tlAFHh'               # Sort files by modification time (newest first)
+
+# Quick directory navigation (the number of dots = levels up, minus one)
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+alias .....='cd ../../../..'
+
+# ==============================================================================
+# 3. DISK & STORAGE MONITORING
+# ==============================================================================
+alias fdl='sudo fdisk -l'           # List all disk partitions
+alias dfh='df -Th'                  # Show disk space usage with file system types
+alias dfi='df -iT'                  # Show inode usage (useful if disk isn't full but cannot create files)
+
+# Check directory sizes, sorted by size (human-readable)
+alias dus='du -sh'                        # Summary size of the current directory only
+alias du1='du -h --max-depth=1 | sort -h' # Size of immediate subdirectories
+alias du2='du -h --max-depth=2 | sort -h' # Size down to 2 levels
+alias du3='du -h --max-depth=3 | sort -h' # Size down to 3 levels
+
+# ==============================================================================
+# 4. NETWORKING
+# ==============================================================================
+# Fetch and print the public IP address of this machine
+alias myip='curl -fsS --max-time 5 https://ifconfig.me && echo'
+
+# ==============================================================================
+# 5. C DEVELOPMENT & 42 SCHOOL
+# ==============================================================================
+# Strict compilation flags (42 Norminette standard)
+alias cw='cc -Wall -Wextra -Werror'
+alias gcw='cc -g -Wall -Wextra -Werror'   # Include debugging symbols
+
+# Standard Valgrind memory leak checking
+alias vg='DEBUGINFOD_URLS="" valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes'
+
+# Valgrind + GDB Debugger integration
+# Automatically runs Valgrind in the background and attaches GDB to it
+vgdb() {
+    local target="${1:-./a.out}"
+    DEBUGINFOD_URLS="" valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --vgdb=yes --vgdb-error=0 "$target" > /dev/null 2>&1 &
+    local vg_pid=$!
+    sleep 0.5
+    gdb -ex "target remote | vgdb --pid=$vg_pid" -ex "layout src" -ex "b main" -ex "c" "$target"
+    kill -9 $vg_pid 2>/dev/null
+    wait $vg_pid 2>/dev/null
+}

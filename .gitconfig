@@ -1,0 +1,25 @@
+# NOTE: [user] name/email are intentionally NOT set here.
+# install.sh asks for them and stores them in ~/.gitconfig.local (not tracked).
+
+[init]
+    defaultBranch = main
+
+[core]
+    editor = nvim
+    excludesfile = ~/.gitignore
+
+[color]
+    ui = auto
+
+# Verify object integrity on every transfer (detects corrupted/tampered data)
+[transfer]
+    fsckObjects = true
+[fetch]
+    fsckObjects = true
+[receive]
+    fsckObjects = true
+
+# Machine-local settings: user.name, user.email, signing key, ... Not tracked in git.
+# Git silently ignores this include if the file does not exist.
+[include]
+    path = ~/.gitconfig.local

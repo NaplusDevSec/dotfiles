@@ -1,0 +1,18 @@
+# ==============================================================================
+# Template for machine-local shell settings.
+#
+# install.sh copies this to ~/.bash_private and/or ~/.zsh_private (mode 600).
+# Those files are listed in .gitignore and are NOT part of this repository.
+# Keep anything private here: VPN helpers, API tokens, internal hostnames.
+# ==============================================================================
+
+# --- Example: VPN helpers ----------------------------------------------------
+# Functions (not aliases) so they can take arguments and report failures.
+# The script run through sudo must be owned by root and not writable by others:
+#   sudo chown root:root /path/to/vpn-script.sh && sudo chmod 755 /path/to/vpn-script.sh
+#
+# vpnon()  { sudo /path/to/vpn-script.sh up; }
+# vpnoff() { sudo /path/to/vpn-script.sh down; }
+
+# --- Example: secrets --------------------------------------------------------
+# export SOME_API_TOKEN="..."

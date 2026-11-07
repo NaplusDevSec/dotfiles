@@ -1,0 +1,45 @@
+# ==============================================================================
+# STARSHIP PROMPT CONFIGURATION (Dotfiles / Server SSH Setup)
+# ==============================================================================
+
+# Define a clean two-line prompt layout to prevent long paths from 
+# squeezing your typing space.
+format = """
+[╭─](bold bright-black)$username$hostname$directory$git_branch$git_status
+[╰─❯ ](bold cyan)"""
+
+# ==============================================================================
+# USERNAME & HOSTNAME MODULES (Shows only on SSH or root)
+# ==============================================================================
+[username]
+show_always = false
+style_user = "bold green"
+format = "[$user]($style)@"
+
+[hostname]
+ssh_only = true
+style = "bold blue"
+format = "[$hostname]($style) "
+
+# ==============================================================================
+# DIRECTORY MODULE
+# ==============================================================================
+[directory]
+style = "bold purple"
+truncation_length = 0          # Display the full path without truncating
+truncate_to_repo = false       # Do not shorten path inside git repositories
+home_symbol = "~"              # Represent home directory with ~
+
+# ==============================================================================
+# GIT BRANCH MODULE
+# ==============================================================================
+[git_branch]
+symbol = " "                 # Custom branch icon
+style = "bold yellow"
+
+# ==============================================================================
+# GIT STATUS MODULE
+# ==============================================================================
+[git_status]
+format = '([\[$all_status$ahead_behind\]]($style) )'
+style = "bold red"
