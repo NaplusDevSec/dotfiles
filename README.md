@@ -1,4 +1,5 @@
 # dotfiles
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 Portable **bash / zsh**, **Neovim**, **tmux** and **Starship** configuration for C and
 assembly development, with an optional [42 School](https://42.fr) mode (Norminette real tabs
