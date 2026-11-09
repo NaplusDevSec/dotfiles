@@ -6,6 +6,11 @@
 DOTFILES_DIR="${DOTFILES_DIR:-$(dirname -- "$(readlink -f -- "${BASH_SOURCE[0]}")")}"
 export DOTFILES_DIR
 
+# Add Cargo binaries to PATH if the directory exists
+if [ -d "$HOME/.cargo/bin" ]; then
+    export PATH="$HOME/.cargo/bin:$PATH"
+fi
+
 # ==========================================
 # 1. SYSTEM CONFIG & PATH
 # ==========================================

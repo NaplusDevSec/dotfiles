@@ -3,6 +3,11 @@
 # Resolve the dotfiles directory from this file's real location (follows symlinks)
 export DOTFILES_DIR="${DOTFILES_DIR:-${${(%):-%x}:A:h}}"
 
+# Add Cargo binaries to PATH if the directory exists
+# Zsh-native array syntax (Automatic de-duplication)
+typeset -U path
+[[ -d "$HOME/.cargo/bin" ]] && path=("$HOME/.cargo/bin" $path)
+
 # ==========================================
 # 1. ENVIRONMENT & PATH
 # ==========================================

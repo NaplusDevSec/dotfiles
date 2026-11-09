@@ -21,16 +21,20 @@ alias cls='clear'
 # ==============================================================================
 # 2. NAVIGATION & FILE LISTING
 # ==============================================================================
-# Enable colored output for directory listing
+# Base directory listing color settings
 alias ls='ls --color=auto'
 
-# Detailed lists with specific formats
-alias l='ls -CFh'                   # Compact column view
-alias ll='ls -lAFHh'                # Detailed list with hidden files
-alias la='ls -ilAFHh --full-time'   # Include inode numbers and exact timestamps
-alias lt='ls -tlAFHh'               # Sort files by modification time (newest first)
+# Tree structure visualization with pagination (preserves ANSI colors)
+alias tl='tree -C | less -R'             # Interactive tree view
+alias tla='tree -Ca | less -R'           # Interactive tree view (including hidden files)
 
-# Quick directory navigation (the number of dots = levels up, minus one)
+# Detailed file listings
+alias l='ls -CF'                           # Compact column view with file type indicators
+alias ll='ls -ilAFHh --full-time'          # Detailed list with hidden files, inodes, and timestamps
+alias lt='ls -ltAFHh'                      # List sorted by modification time (newest first)
+alias lS='ls -lSAFHh'                      # List sorted by file size (largest first)
+
+# Quick directory navigation (dots count = parent level up)
 alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
@@ -41,13 +45,13 @@ alias .....='cd ../../../..'
 # ==============================================================================
 alias fdl='sudo fdisk -l'           # List all disk partitions
 alias dfh='df -Th'                  # Show disk space usage with file system types
-alias dfi='df -iT'                  # Show inode usage (useful if disk isn't full but cannot create files)
+alias dfi='df -iT'                  # Show inode usage
 
 # Check directory sizes, sorted by size (human-readable)
-alias dus='du -sh'                        # Summary size of the current directory only
-alias du1='du -h --max-depth=1 | sort -h' # Size of immediate subdirectories
-alias du2='du -h --max-depth=2 | sort -h' # Size down to 2 levels
-alias du3='du -h --max-depth=3 | sort -h' # Size down to 3 levels
+alias dus='du -sh'                         # Summary size of the current directory only
+alias du1='du -h --max-depth=1 | sort -h' # Subdirectory sizes (depth 1)
+alias du2='du -h --max-depth=2 | sort -h' # Subdirectory sizes (depth 2)
+alias du3='du -h --max-depth=3 | sort -h' # Subdirectory sizes (depth 3)
 
 # ==============================================================================
 # 4. NETWORKING
@@ -76,3 +80,24 @@ vgdb() {
     kill -9 $vg_pid 2>/dev/null
     wait $vg_pid 2>/dev/null
 }
+
+# ==============================================================================
+# 6. MODERN CLI TOOLS (bat, fd, rg)
+# ==============================================================================
+# Syntax-highlighted cat replacement (bat)
+if command -v bat >/dev/null 2>&1; then
+    alias b='bat'                          # Full bat output with syntax highlighting and pager
+    alias bb='bat --style=plain --paging=never' # Plain text output without borders or pager
+fi
+
+# Fast directory entry finder (fd)
+if command -v fd >/dev/null 2>&1; then
+    alias fda='fd --hidden --no-ignore'    # Search all files (including hidden & ignored)
+fi
+
+# Fast line-oriented search tool (ripgrep)
+if command -v rg >/dev/null 2>&1; then
+    alias ripgrep='rg'                     # Explicit command alias for rg
+    alias rgi='rg -i'                      # Case-insensitive search
+    alias rga='rg --hidden --no-ignore'    # Search inside all files (including hidden & ignored)
+fi
