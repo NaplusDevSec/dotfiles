@@ -32,7 +32,7 @@ alias tla='tree -Ca | less -R'           # Interactive tree view (including hidd
 alias l='ls -CF'                           # Compact column view with file type indicators
 alias ll='ls -ilAFHh --full-time'          # Detailed list with hidden files, inodes, and timestamps
 alias lt='ls -ltAFHh'                      # List sorted by modification time (newest first)
-alias lS='ls -lSAFHh'                      # List sorted by file size (largest first)
+alias LS='ls -lSAFHh'                      # List sorted by file size (largest first)
 
 # Quick directory navigation (dots count = parent level up)
 alias ..='cd ..'
