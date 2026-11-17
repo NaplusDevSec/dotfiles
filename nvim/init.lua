@@ -64,19 +64,38 @@ vim.filetype.add({
 local function insert_42_header()
     local WIDTH = 80
     local filename = vim.fn.expand("%:t")
+    local ext = vim.fn.expand("%:e"):lower()
+    local ft = vim.bo.filetype:lower()
     local user = local_cfg.login or os.getenv("USER") or "user"
     local mail = local_cfg.mail or (user .. "@student.42.fr")
     local current_date = os.date("%Y/%m/%d %H:%M:%S")
 
-    local function line(left, right)
-        left = "/*    " .. left
-        right = right .. " */"
-        local pad = WIDTH - #left - #right
-        if pad < 1 then pad = 1 end
-        return left .. string.rep(" ", pad) .. right
+    -- Select comment delimiters based on filetype or extension (defaults to #)
+    local c_start, c_end, c_fill = "#", "#", "*"
+    if ft == "c" or ft == "cpp" or ft == "css" or ext == "c" or ext == "h" or ext == "cpp" or ext == "hpp" then
+        c_start, c_end, c_fill = "/*", "*/", "*"
+    elseif ft == "lua" or ft == "sql" or ext == "lua" then
+        c_start, c_end, c_fill = "--", "--", "-"
+    elseif ft == "javascript" or ft == "typescript" or ft == "rust" or ft == "go" or ft == "java" then
+        c_start, c_end, c_fill = "//", "//", "/"
+    elseif ft == "vim" or ext == "vim" then
+        c_start, c_end, c_fill = '"', '"', "*"
+    elseif ft == "asm" or ext == "asm" or ext == "inc" or ext == "s" then
+        c_start, c_end, c_fill = ";", ";", "*"
     end
 
-    local border = "/* " .. string.rep("*", WIDTH - 6) .. " */"
+    -- Calculate left/right padding dynamically (preserves 80-char width without truncating .com)
+    local function line(left, right)
+        local l_pad = string.rep(" ", 5 - #c_start)
+        local r_pad = string.rep(" ", 5 - #c_end)
+        local l_str = c_start .. l_pad .. left
+        local r_str = right .. r_pad .. c_end
+        local pad = WIDTH - #l_str - #r_str
+        if pad < 1 then pad = 1 end
+        return l_str .. string.rep(" ", pad) .. r_str
+    end
+
+    local border = c_start .. " " .. string.rep(c_fill, WIDTH - #c_start - #c_end - 2) .. " " .. c_end
 
     -- Scan existing buffer to preserve original 'Created:' date and creator
     local total_lines = vim.api.nvim_buf_line_count(0)
@@ -84,12 +103,18 @@ local function insert_42_header()
     local created_date = current_date
     local created_user = user
 
+    local esc_start = vim.pesc(c_start)
+    local esc_end = vim.pesc(c_end)
+    local esc_fill = vim.pesc(c_fill)
+    local border_pat = "^" .. esc_start .. " " .. esc_fill .. "+ " .. esc_end .. "$"
+    local created_pat = "^" .. esc_start .. "%s+Created:%s+(%d%d%d%d/%d%d/%d%d %d%d:%d%d:%d%d)%s+by%s+(%S+)"
+
     local borders = {}
     for i, l in ipairs(scan) do
-        if l:match("^/%* %*+ %*/$") then
+        if l:match(border_pat) then
             table.insert(borders, i)
         end
-        local c_date, c_user = l:match("^/%*%s+Created:%s+(%d%d%d%d/%d%d/%d%d %d%d:%d%d:%d%d)%s+by%s+(%S+)")
+        local c_date, c_user = l:match(created_pat)
         if c_date and c_user then
             created_date = c_date
             created_user = c_user
@@ -178,7 +203,7 @@ require("lazy").setup({
         end,
     },
 
-	-- 2. File Explorer Sidebar
+    -- 2. File Explorer Sidebar
     {
         "nvim-tree/nvim-tree.lua",
         version = "*",
