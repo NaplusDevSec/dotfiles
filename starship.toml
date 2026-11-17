@@ -1,23 +1,20 @@
 # ==============================================================================
-# STARSHIP PROMPT CONFIGURATION (Dotfiles / Server SSH Setup)
+# STARSHIP PROMPT CONFIGURATION (Dotfiles / Server & Workstation Setup)
 # ==============================================================================
-
-# Define a clean two-line prompt layout to prevent long paths from 
-# squeezing your typing space.
 format = """
 [╭─](bold bright-black)$username$hostname$directory$git_branch$git_status
 [╰─❯ ](bold cyan)"""
 
 # ==============================================================================
-# USERNAME & HOSTNAME MODULES (Shows only on SSH or root)
+# USERNAME & HOSTNAME MODULES (Active only during SSH or root sessions)
 # ==============================================================================
 [username]
-show_always = false
+show_always = false             # Hide username on local terminal sessions
 style_user = "bold green"
 format = "[$user]($style)@"
 
 [hostname]
-ssh_only = true
+ssh_only = true                 # Display hostname only when connected via SSH
 style = "bold blue"
 format = "[$hostname]($style) "
 
@@ -26,20 +23,17 @@ format = "[$hostname]($style) "
 # ==============================================================================
 [directory]
 style = "bold purple"
-truncation_length = 0          # Display the full path without truncating
-truncate_to_repo = false       # Do not shorten path inside git repositories
-home_symbol = "~"              # Represent home directory with ~
+truncation_length = 0          # Display the full directory path without truncation
+truncate_to_repo = false       # Keep full path visible inside Git repositories
+home_symbol = "~"              # Use ~ to represent the home directory
 
 # ==============================================================================
-# GIT BRANCH MODULE
+# GIT MODULES
 # ==============================================================================
 [git_branch]
-symbol = " "                 # Custom branch icon
+symbol = " "                  # Branch icon (Nerd Font)
 style = "bold yellow"
 
-# ==============================================================================
-# GIT STATUS MODULE
-# ==============================================================================
 [git_status]
 format = '([\[$all_status$ahead_behind\]]($style) )'
 style = "bold red"

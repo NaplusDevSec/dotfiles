@@ -2,6 +2,9 @@
 # Shared by bash and zsh. Keep this file free of machine-specific or secret
 # settings — those belong in ~/.bash_private or ~/.zsh_private (see private.example).
 
+alias nv="nvim"
+alias hd="herdr"
+
 # ==============================================================================
 # 1. CORE UTILITIES & SAFETY
 # ==============================================================================
@@ -14,6 +17,7 @@ alias egrep='grep -E --color=auto'
 alias rm='rm -i'
 alias cp='cp -i'
 alias mv='mv -i'
+alias mkdir='mkdir -p'
 
 # Clear terminal screen
 alias cls='clear'
@@ -25,14 +29,14 @@ alias cls='clear'
 alias ls='ls --color=auto'
 
 # Tree structure visualization with pagination (preserves ANSI colors)
-alias tl='tree -C | less -R'             # Interactive tree view
+alias tl='tree -C | less -R'              # Interactive tree view
 alias tla='tree -Ca | less -R'           # Interactive tree view (including hidden files)
 
 # Detailed file listings
-alias l='ls -CF'                           # Compact column view with file type indicators
-alias ll='ls -ilAFHh --full-time'          # Detailed list with hidden files, inodes, and timestamps
-alias lt='ls -ltAFHh'                      # List sorted by modification time (newest first)
-alias LS='ls -lSAFHh'                      # List sorted by file size (largest first)
+alias l='ls -CF'                         # Compact column view with file type indicators
+alias ll='ls -ilAFHh --full-time'         # Detailed list with hidden files, inodes, and timestamps
+alias lt='ls -ltAFHh'                     # List sorted by modification time (newest first)
+alias LS='ls -lSAFHh'                     # List sorted by file size (largest first)
 
 # Quick directory navigation (dots count = parent level up)
 alias ..='cd ..'
@@ -43,12 +47,12 @@ alias .....='cd ../../../..'
 # ==============================================================================
 # 3. DISK & STORAGE MONITORING
 # ==============================================================================
-alias fdl='sudo fdisk -l'           # List all disk partitions
+alias fdl='sudo fdisk -l'            # List all disk partitions
 alias dfh='df -Th'                  # Show disk space usage with file system types
 alias dfi='df -iT'                  # Show inode usage
 
 # Check directory sizes, sorted by size (human-readable)
-alias dus='du -sh'                         # Summary size of the current directory only
+alias dus='du -sh'                       # Summary size of the current directory only
 alias du1='du -h --max-depth=1 | sort -h' # Subdirectory sizes (depth 1)
 alias du2='du -h --max-depth=2 | sort -h' # Subdirectory sizes (depth 2)
 alias du3='du -h --max-depth=3 | sort -h' # Subdirectory sizes (depth 3)
@@ -86,7 +90,7 @@ vgdb() {
 # ==============================================================================
 # Syntax-highlighted cat replacement (bat)
 if command -v bat >/dev/null 2>&1; then
-    alias b='bat'                          # Full bat output with syntax highlighting and pager
+    alias b='bat'                         # Full bat output with syntax highlighting and pager
     alias bb='bat --style=plain --paging=never' # Plain text output without borders or pager
 fi
 
